@@ -8,7 +8,7 @@ function App() {
   async function fetchMovieHandler() {
     const response = await fetch("https://swapi.dev/api/films/")
     const data=response.json();
-        const transformedMovies = data.results.map((movieData) => {
+    const transformedMovies = data.results.map((movieData) => {
           return {
             id: movieData.episode_id,
             title: movieData.title,
