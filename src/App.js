@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import AddMovie from "./components/AddMovie";
 
 import MoviesList from "./components/MoviesList";
 import "./App.css";
@@ -9,8 +10,11 @@ function App() {
 
   const fetchMovieHandler = useCallback(async () => {
     setIsLoading(true);
-    const response = await fetch("https://swapi.dev/api/films/");
+    const response = await fetch(
+      "https://reacthttp-c42d0-default-rtdb.firebaseio.com/movies.json"
+    );
     const data = await response.json();
+    console.log(data);
     const transformedMovies = data.results.map((movieData) => {
       return {
         id: movieData.episode_id,
@@ -26,8 +30,25 @@ function App() {
   useEffect(() => {
     fetchMovieHandler();
   }, [fetchMovieHandler]);
+  async function addMovieHandler(movie) {
+    const response = await fetch(
+      "https://reacthttp-c42d0-default-rtdb.firebaseio.com/movies.json",
+      {
+        method: "POST",
+        body: JSON.stringify(movie),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+  }
   return (
     <React.Fragment>
+      <section>
+        <AddMovie onAddMovie={addMovieHandler}></AddMovie>
+      </section>
       <section>
         <button onClick={fetchMovieHandler}>Fetch Movies</button>
       </section>
